@@ -6,19 +6,17 @@ app = Flask(__name__)
 app.debug = True
 app.host = "0.0.0.0"
 
+t = Twords()
+
 @app.route('/health')
 def health():
     return "OK\n"
 
-@app.route('/matches/<tiles>')
-def matches(tiles):
-    t = Twords()
-    return jsonify(matches = t.matches(tiles))
-
-@app.route('/matches/<tiles>/<musts>')
-def musts(tiles, musts):
-    t = Twords
-    return jsonify(matches = t.matches(tiles, musts))
+@app.route('/matches/<tiles>', defaults = {'required': ''})
+@app.route('/matches/<tiles>/', defaults = {'required': ''})
+@app.route('/matches/<tiles>/<required>')
+def matches(tiles, required):
+    return jsonify(matches = t.matches(tiles, required))
 
 if __name__ == '__main__':
     print "Hi, I'm %s and I'm here to help you." % __name__
